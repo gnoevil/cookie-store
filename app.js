@@ -17,13 +17,20 @@ table.appendChild(tHead);
 var firstRow = document.createElement('tr');
 firstRow.className = 'firstRow';
 tHead.appendChild(firstRow);
+var emptyCell = document.createElement('th'); //creating empty cell and appending
+firstRow.appendChild(emptyCell);
 
 // create and append one <th> for every hour
-for (var i = 0; i < (hoursOpen.length + 2); i++){
+for (var i = 0; i < hoursOpen.length; i++){
   var th = document.createElement('th');
   th.textContent = hoursOpen[i];
   firstRow.appendChild(th);
 }
+
+//'Totals Section'//
+var dailyTotals = document.createElement('th');
+dailyTotals.textContent = 'Daily Totals';
+firstRow.appendChild(dailyTotals);
 
 //create <tbody> and append
 var tBody = document.createElement('tbody');
@@ -36,11 +43,19 @@ var Store = function(name,minCust,maxCust,avgBought) {
   this.minCust = minCust;
   this.maxCust = maxCust;
   this.avgBought = avgBought;
+  this.salesLog = [];
+  this.totalSales = 0;
   this.custPerHour = function () {
     return Math.floor(Math.random() * (this.maxCust - this.minCust) + this.minCust);
   };
   this.cookiesBought = function (){
     return Math.floor(this.avgBought * this.custPerHour());
+  };
+  this.addSales = function (){
+    for(var i = 0; i < hoursOpen.length; i++){
+      this.salesLog.push(this.cookiesBought());
+      this.totalSales += this.salesLog[i];
+    }
   };
 
   //create a <tr> for each new Store
@@ -48,43 +63,50 @@ var Store = function(name,minCust,maxCust,avgBought) {
   tr.className = this.name;
   tr.textContent = this.name;
   tBody.appendChild(tr);
+  var currentRow = document.getElementsByClassName(this.name)[0];
 
   //store each hour's cookies sold in a <td> using a for-loop
+  //call my addSales method and append totalSales to the last column.
+  this.addSales();
+  console.log(this.salesLog);
   for(var i = 0; i < hoursOpen.length; i++){
     var td = document.createElement('td');
-    var currentRow = document.getElementsByClassName(this.name)[0];
+    td.textContent = this.salesLog[i] + ' cookies';
     currentRow.appendChild(td);
-    td.textContent = this.cookiesBought() + ' cookies';
   }
+  console.log(this.salesLog);
+  var totalsCell = document.createElement('td');
+  totalsCell.textContent = this.totalSales + ' cookies';
+  currentRow.appendChild(totalsCell);
 };
 
 //creating my stores (objects)
+
 var firstAndPike = new Store('First and Pike', 23, 65, 6.3);
 var seatac = new Store('Seatac', 3, 24, 1.2);
 var seattleCenter = new Store('Seattle Center', 11, 38, 3.7);
 var capHill = new Store('Capitol Hill', 20, 38, 2.3);
 var alki = new Store('Alki', 2, 16, 4.6);
 
-//Old function to calculate
-// function calcCookiesAndStore(location) {
-//   var newUl = document.createElement('ul');
-//   newUl.className = location.name;
-//   document.body.appendChild(newUl);
-//   var myUl = document.getElementsByClassName(location.name)[0];
-//   for (var hour = 0; hour < hoursOpen.length; hour++) {
-//     var currentHour = hoursOpen[hour] + ': ';
-//     var cookiesBought = Math.floor(location.avgBought * location.custPerHour());
-//     location.sales.push(cookiesBought);
-//     var newLi = document.createElement('li');
-//     newLi.className = location;
-//     newLi.innerText = currentHour + cookiesBought + 'cookies';
-//     myUl.appendChild(newLi);
-//   }
+//append a new row and add each column's totals
+var totalsByHourRow = document.createElement('tr');
+totalsByHourRow.setAttribute('id', 'totalsByHourRow');
+totalsByHourRow.textContent = 'Totals by Hour';
+tBody.appendChild(totalsByHourRow);
 
-// var makeTotal = function(location) {
-//   var total = location.reduce(function(a, b) { return a + b; }, 0); //interwebs
-//   still need code to push total to html.
-// };
+//loop through the hours and add each hours' sales to an array.
+var salesAtHour = [];
+for (var i = 0; i < hoursOpen.length; i++) {
+  var currentSales = (firstAndPike.salesLog[i] + seatac.salesLog[i] + seattleCenter.salesLog[i] + capHill.salesLog[i] + alki.salesLog[i]);
+  salesAtHour.push(currentSales);
+}
+
+//using my array, create a new <td> element and append to totalsByHourRow
+for (var i = 0; i < hoursOpen.length; i++) {
+  var td = document.createElement('td');
+  td.textContent = salesAtHour[i];
+  totalsByHourRow.appendChild(td);
+}
 
 /* Build a table from scratch in JS
 //Step 1: Create my <table> element.
