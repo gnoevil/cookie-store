@@ -17,7 +17,7 @@ table.appendChild(tHead);
 var firstRow = document.createElement('tr');
 firstRow.className = 'firstRow';
 tHead.appendChild(firstRow);
-var emptyCell = document.createElement('th'); //creating empty cell and appending
+var emptyCell = document.createElement('th'); //creating first empty cell and appending
 firstRow.appendChild(emptyCell);
 
 // create and append one <th> for every hour
@@ -58,11 +58,13 @@ var Store = function(name,minCust,maxCust,avgBought) {
     }
   };
 
-  //create a <tr> for each new Store
+  //create a <tr> for each new Store and a <td>
   var tr = document.createElement('tr');
   tr.className = this.name;
-  tr.textContent = this.name;
   tBody.appendChild(tr);
+  var td = document.createElement('td');
+  td.textContent = this.name;
+  tr.appendChild(td);
   var currentRow = document.getElementsByClassName(this.name)[0];
 
   //store each hour's cookies sold in a <td> using a for-loop
@@ -107,6 +109,10 @@ for (var i = 0; i < hoursOpen.length; i++) {
   td.textContent = salesAtHour[i];
   totalsByHourRow.appendChild(td);
 }
+
+//append an empty cell to the bottom row
+var lastCell = document.createElement('td');
+totalsByHourRow.appendChild(lastCell);
 
 /* Build a table from scratch in JS
 //Step 1: Create my <table> element.
