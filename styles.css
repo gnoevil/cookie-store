@@ -2,12 +2,40 @@ table {
   border: 3px solid black;
   padding: 2px;
 }
-
-th {
-  background-color: #D3D3D3;
-  padding-bottom: 4 px;
-  border: 2px solid black;
+#tableTitle{
+  font-size: 24px;
+  padding: 15px;
 }
+.firstRow {
+  background-color: #D3D3D3;
+}
+.firstRow > th {
+  font-size: 18px;
+  padding: 20px;
+  font-weight: bold;
+}
+#dailyTotals {
+
+}
+.First.and.Pike, .Seattle.Center, .Alki {
+  background-color: #B7CDE7;
+}
+.Seatac, .Capitol.Hill {
+  background-color: #FFF2D8;
+}
+/*.First.and.Pike:first-child {
+  font-weight: bold;
+  font-size: 18px;
+  padding: 20px;
+}*/
+#seatac, #seattle_center, #capitol_hill, #alki {
+  font-weight: bold;
+  font-size: 18px;
+  padding: 20px;
+}
+
 td {
   border: 1px solid black;
+  text-align: center;
+  height: 50px;
 }

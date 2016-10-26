@@ -13,6 +13,15 @@ section.appendChild(table);
 var tHead = document.createElement('thead');
 table.appendChild(tHead);
 
+//create a <tr> to place a title for my table
+var titleRow = document.createElement('tr');
+tHead.appendChild(titleRow);
+var tableTitle = document.createElement('th');
+tableTitle.textContent = 'Daily Report of Cookies Sold';
+tableTitle.setAttribute('id', 'tableTitle');
+tableTitle.setAttribute('colspan', 16);
+titleRow.appendChild(tableTitle);
+
 //Create first <tr> that goes in the <thead> which contains displayed hour.
 var firstRow = document.createElement('tr');
 firstRow.className = 'firstRow';
@@ -29,6 +38,7 @@ for (var i = 0; i < hoursOpen.length; i++){
 
 //'Totals Section'//
 var dailyTotals = document.createElement('th');
+dailyTotals.setAttribute('id', 'dailyTotals');
 dailyTotals.textContent = 'Daily Totals';
 firstRow.appendChild(dailyTotals);
 
@@ -64,8 +74,13 @@ var Store = function(name,minCust,maxCust,avgBought) {
   tBody.appendChild(tr);
   var td = document.createElement('td');
   td.textContent = this.name;
+  td.setAttribute('id', this.name.replace(' ', '_').toLowerCase());
   tr.appendChild(td);
   var currentRow = document.getElementsByClassName(this.name)[0];
+
+  //Manually set FirstandPike id attribute because everything is failing =/
+  // var firstAndPike = document.getElementsByClassName('first_and Pike')[0];
+  // firstAndPike.setAttribute('id', 'first_and_pike');
 
   //store each hour's cookies sold in a <td> using a for-loop
   //call my addSales method and append totalSales to the last column.
@@ -90,6 +105,7 @@ var seattleCenter = new Store('Seattle Center', 11, 38, 3.7);
 var capHill = new Store('Capitol Hill', 20, 38, 2.3);
 var alki = new Store('Alki', 2, 16, 4.6);
 
+
 //append a new row and add each column's totals
 var totalsByHourRow = document.createElement('tr');
 totalsByHourRow.setAttribute('id', 'totalsByHourRow');
@@ -106,7 +122,7 @@ for (var i = 0; i < hoursOpen.length; i++) {
 //using my array, create a new <td> element and append to totalsByHourRow
 for (var i = 0; i < hoursOpen.length; i++) {
   var td = document.createElement('td');
-  td.textContent = salesAtHour[i];
+  td.textContent = salesAtHour[i] + ' cookies';
   totalsByHourRow.appendChild(td);
 }
 
