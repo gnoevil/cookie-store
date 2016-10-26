@@ -1,12 +1,13 @@
 'use strict';
 
 var hoursOpen = ['6:00am', '7:00am', '8:00am','9:00am', '10:00am', '11:00am', '12:00pm','1:00pm', '2:00pm', '3:00pm', '4:00pm', '5:00pm', '6:00pm', '7:00pm'];
+var allStores = [];
 
 //Table: Columns: 16, Rows:7
 //Going to create a table to store my data and add it to the DOM.
 var table = document.createElement('table');
 table.className = 'salesTable';
-var section = document.getElementsByTagName('section')[0];
+var section = document.getElementById('table_area');
 section.appendChild(table);
 
 //create and append <thead> to my table
@@ -66,6 +67,7 @@ var Store = function(name,minCust,maxCust,avgBought) {
       this.salesLog[i] = this.cookiesBought();
       this.totalSales += this.salesLog[i];
     }
+    allStores.push(this); //add my completed (or any new) stores to the store array.
   };
 
   //create a <tr> for each new Store and a <td>
@@ -105,8 +107,6 @@ var seattleCenter = new Store('Seattle Center', 11, 38, 3.7);
 var capHill = new Store('Capitol Hill', 20, 38, 2.3);
 var alki = new Store('Alki', 2, 16, 4.6);
 
-var allStores = [];
-
 //append a new row and add each column's totals
 var totalsByHourRow = document.createElement('tr');
 totalsByHourRow.setAttribute('id', 'totalsByHourRow');
@@ -131,18 +131,13 @@ for (var i = 0; i < hoursOpen.length; i++) {
 var lastCell = document.createElement('td');
 totalsByHourRow.appendChild(lastCell);
 
-/* Build a table from scratch in JS
-//Step 1: Create my <table> element.
-//Step 2: Give the table an ID.
-//Step 3: Append the table to the DOM.
-//Step 4: Create a <thead> for my column names
-//Step 5: Append <thead> to the table
-//Step 6: Create and append a <th> for every hour.
-//Step 7: Create a <tr> element. (make a function)
-//Step 8: Create one <td> for every hour + one blank to start and + one to end.
-//Step 9: Append <tr> to the table.
-//Step 10: Append the <td>s to the <tr>
-// Repeat steps 4 through 7 for as many stores as we have.
-*/
+//Here is my section regarding 'Forms'
 
-//create my own totals row at the bottom.
+var newStore = [];
+
+// var myForm = document.getElementById('my_form');
+// var storeData1 = document.getElementById('store_name_box')
+// var storeData2 = document.getElementById('store_min_cust');
+// var storeData3 =
+
+//create an event-listener to wait for user-input

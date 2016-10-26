@@ -7,8 +7,18 @@
     <title>Sales Info</title>
   </head>
   <body>
+    <h1>Sales and Management Home</h1>
     <main>
-      <section>
+      <section id="form_area">
+        <form id="my_form" action="">
+          Store Name: <input id="store_name_box" type="text" name="Store Name-Box" placeholder= "New Store"></input>
+          Min Cust/Hr: <input id="store_min_cust" type="text" name="Store Min-Cust" placeholder="Minimum Customers/hour"></input>
+          Max Cust/Hr: <input id="store_max_cust" type="text" name="Store Max-Cust" placeholder="Maximum Customers/hour"></input>
+          Avg Bought/Cust: <input id="store_average_bought" type="text" name="Store Average Bought" placeholder="Average Bought/Customers"></input>
+          <input id="submit_store" type="submit" value="Add Store"></input>
+        </form>
+      </section>
+      <section id="table_area">
       </section>
     </main>
     <script src="app.js"></script>
