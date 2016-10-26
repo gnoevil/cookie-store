@@ -63,7 +63,7 @@ var Store = function(name,minCust,maxCust,avgBought) {
   };
   this.addSales = function (){
     for(var i = 0; i < hoursOpen.length; i++){
-      this.salesLog.push(this.cookiesBought());
+      this.salesLog[i] = this.cookiesBought();
       this.totalSales += this.salesLog[i];
     }
   };
