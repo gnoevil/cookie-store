@@ -45,11 +45,11 @@ firstRow.appendChild(dailyTotals);
 
 //create <tbody> and append
 var tBody = document.createElement('tbody');
-tBody.className = 'tBody';
+tBody.setAttribute('id', 'tBody');
 table.appendChild(tBody);
 
 //Store constructor
-var Store = function(name,minCust,maxCust,avgBought) {
+function Store(name,minCust,maxCust,avgBought) {
   this.name = name;
   this.minCust = minCust;
   this.maxCust = maxCust;
@@ -69,34 +69,38 @@ var Store = function(name,minCust,maxCust,avgBought) {
     }
     allStores.push(this); //add my completed (or any new) stores to the store array.
   };
-
-  //create a <tr> for each new Store and a <td>
-  var tr = document.createElement('tr');
-  tr.className = this.name;
-  tBody.appendChild(tr);
-  var td = document.createElement('td');
-  td.textContent = this.name;
-  td.setAttribute('id', this.name.replace(' ', '_').toLowerCase());
-  tr.appendChild(td);
-  var currentRow = document.getElementsByClassName(this.name)[0];
-
+  this.createStore = function(){
+    //create a <tr> for each new Store and a <td>
+    var tr = document.createElement('tr');
+    tr.className = this.name;
+    tBody.appendChild(tr);
+    var td = document.createElement('td');
+    td.textContent = this.name;
+    td.setAttribute('id', this.name.replace(' ', '_').toLowerCase());
+    tr.appendChild(td);
+    var currentRow = document.getElementsByClassName(this.name)[0];
+  };
+  createStore();
   //Manually set FirstandPike id attribute because everything is failing =/
   // var firstAndPike = document.getElementsByClassName('first_and Pike')[0];
   // firstAndPike.setAttribute('id', 'first_and_pike');
-
   //store each hour's cookies sold in a <td> using a for-loop
   //call my addSales method and append totalSales to the last column.
   this.addSales();
   console.log(this.salesLog);
-  for(var i = 0; i < hoursOpen.length; i++){
-    var td = document.createElement('td');
-    td.textContent = this.salesLog[i] + ' cookies';
-    currentRow.appendChild(td);
-  }
-  console.log(this.salesLog);
-  var totalsCell = document.createElement('td');
-  totalsCell.textContent = this.totalSales + ' cookies';
-  currentRow.appendChild(totalsCell);
+
+  this.createData = function(){
+    for(var i = 0; i < hoursOpen.length; i++){
+      var td = document.createElement('td');
+      td.textContent = this.salesLog[i] + ' cookies';
+      currentRow.appendChild(td);
+    }
+    console.log(this.salesLog);
+    var totalsCell = document.createElement('td');
+    totalsCell.textContent = this.totalSales + ' cookies';
+    currentRow.appendChild(totalsCell);
+  };
+  createData();
 };
 
 //creating my stores (objects)
@@ -108,11 +112,12 @@ var capHill = new Store('Capitol Hill', 20, 38, 2.3);
 var alki = new Store('Alki', 2, 16, 4.6);
 
 //append a new row and add each column's totals
-var totalsByHourRow = document.createElement('tr');
-totalsByHourRow.setAttribute('id', 'totalsByHourRow');
-totalsByHourRow.textContent = 'Totals by Hour';
-tBody.appendChild(totalsByHourRow);
-
+function CreateTotalRow() {
+  var totalsByHourRow = document.createElement('tr');
+  totalsByHourRow.setAttribute('id', 'totalsByHourRow');
+  totalsByHourRow.textContent = 'Totals by Hour';
+  tBody.appendChild(totalsByHourRow);
+};
 //loop through the hours and add each hours' sales to an array.
 var salesAtHour = [];
 for (var i = 0; i < hoursOpen.length; i++) {
@@ -135,6 +140,29 @@ totalsByHourRow.appendChild(lastCell);
 
 var newStore = [];
 
+var submitForm = document.getElementById('my_form');
+function postForm(event) {
+  event.preventDefault();
+  var name = event.target[1].value;
+  var minCust = parseInt(event.target[2].value);
+  var maxCust = parseInt(event.target[3].value);
+  var avgBought = parseInt(event.target[4].value);
+  var newStore = new Store(name, minCust, maxCust, avgBought);
+  newStore.createData();
+};
+
+function populateTable(){
+  console.log('populateTable');
+  var tBody = document.getElementById('tBody');
+  tBody.innerHTML = ' ';
+  for(var i = 0; i < allStores.length; i++) {
+    allStores[i].createStore();
+    allStores[i].createData();
+  }
+  CreateTotalRow();
+};
+
+submitForm.addEventListener('submit', postForm);
 // var myForm = document.getElementById('my_form');
 // var storeData1 = document.getElementById('store_name_box')
 // var storeData2 = document.getElementById('store_min_cust');
